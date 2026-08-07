@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Settings, Users, AlertTriangle, Image as ImageIcon } from "lucide-react"
-import { updateEventSettings, closeVoting, deleteEvent } from "@/lib/settings.actions"
+import { Settings, Users, AlertTriangle, Image as ImageIcon, LogOut, UserMinus } from "lucide-react"
+import { updateEventSettings, closeVoting, deleteEvent, removeParticipant } from "@/lib/settings.actions"
 
 type Participant = { id: string, nickname: string, createdAt: Date }
 type EventData = {
@@ -20,10 +20,11 @@ type EventData = {
   dateStart: Date | null
   dateEnd: Date | null
   status: string
+  creatorId: string
   participants: Participant[]
 }
 
-export function EventSettingsDialog({ event }: { event: EventData }) {
+export function EventSettingsDialog({ event, currentUserId }: { event: EventData, currentUserId?: string }) {
   const [open, setOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
@@ -118,7 +119,7 @@ export function EventSettingsDialog({ event }: { event: EventData }) {
               </div>
               
               <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2">
-                {event.participants.map((p, i) => (
+                {event.participants.map((p) => (
                   <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">
@@ -126,11 +127,51 @@ export function EventSettingsDialog({ event }: { event: EventData }) {
                       </div>
                       <span className="font-semibold text-slate-800">{p.nickname}</span>
                     </div>
-                    {i === 0 && (
-                      <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full border border-amber-200">
-                        Creador
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {p.id === event.creatorId && (
+                        <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full border border-amber-200">
+                          Creador
+                        </span>
+                      )}
+                      
+                      {currentUserId === event.creatorId && p.id !== event.creatorId && (
+                        <Button 
+                          variant="ghost" 
+                          size="icon-sm"
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          onClick={() => {
+                            if (confirm(`¿Eliminar a ${p.nickname} del parche? Se borrarán sus votos y deudas.`)) {
+                              startTransition(() => {
+                                removeParticipant(event.id, p.id)
+                              })
+                            }
+                          }}
+                          disabled={isPending}
+                          title="Eliminar participante"
+                        >
+                          <UserMinus className="w-4 h-4" />
+                        </Button>
+                      )}
+                      
+                      {currentUserId === p.id && p.id !== event.creatorId && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                          onClick={() => {
+                            if (confirm("¿Seguro que quieres salir del parche? Se borrarán tus votos y deudas.")) {
+                              startTransition(() => {
+                                removeParticipant(event.id, p.id)
+                              })
+                            }
+                          }}
+                          disabled={isPending}
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Salir
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

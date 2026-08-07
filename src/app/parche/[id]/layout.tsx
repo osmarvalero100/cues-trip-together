@@ -58,7 +58,7 @@ export default async function ParcheLayout({
             </div>
           </div>
           
-          <EventSettingsDialog event={event} />
+          <EventSettingsDialog event={event} currentUserId={userId} />
         </div>
 
         {/* Navigation Tabs */}
