@@ -36,12 +36,9 @@ export function NewExpenseDialog({ eventId, participants, currentUserId }: { eve
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* @ts-expect-error DialogTrigger types missing asChild */}
-      <DialogTrigger asChild>
-        <Button className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto">
-          <Receipt className="w-4 h-4 mr-2" />
-          Registrar Gasto
-        </Button>
+      <DialogTrigger render={<Button className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto" />}>
+        <Receipt className="w-4 h-4 mr-2" />
+        Registrar Gasto
       </DialogTrigger>
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>

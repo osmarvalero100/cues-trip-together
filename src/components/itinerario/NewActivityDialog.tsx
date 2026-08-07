@@ -22,12 +22,9 @@ export function NewActivityDialog({ eventId, defaultDate }: { eventId: string, d
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* @ts-expect-error DialogTrigger types missing asChild */}
-      <DialogTrigger asChild>
-        <Button className="bg-indigo-600 hover:bg-indigo-700">
-          <CalendarPlus className="w-4 h-4 mr-2" />
-          Agregar Actividad
-        </Button>
+      <DialogTrigger render={<Button className="bg-indigo-600 hover:bg-indigo-700" />}>
+        <CalendarPlus className="w-4 h-4 mr-2" />
+        Agregar Actividad
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
