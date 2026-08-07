@@ -7,9 +7,10 @@ import { deleteItineraryItem } from "@/lib/itinerario.actions"
 import { format, isSameDay } from "date-fns"
 import { es } from "date-fns/locale"
 
-export default async function CronogramaPage({ params }: { params: { id: string } }) {
+export default async function CronogramaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       itineraryItems: {
         orderBy: { timeStart: 'asc' }

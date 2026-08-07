@@ -5,14 +5,15 @@ import { Progress } from "@/components/ui/progress"
 import { NewChecklistItemDialog } from "@/components/checklist/NewChecklistItemDialog"
 import { ChecklistItemRow } from "@/components/checklist/ChecklistItemRow"
 
-export default async function ChecklistPage({ params }: { params: { id: string } }) {
+export default async function ChecklistPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const cookieStore = await cookies()
   const currentUserId = cookieStore.get('trip_user_id')?.value
 
   if (!currentUserId) return null
 
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       checklistItems: {
         include: { assignee: true },

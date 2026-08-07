@@ -9,8 +9,9 @@ export default async function ParcheLayout({
   params,
 }: {
   children: React.ReactNode
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const cookieStore = await cookies()
   const userId = cookieStore.get('trip_user_id')?.value
 
@@ -19,7 +20,7 @@ export default async function ParcheLayout({
   }
 
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       creator: true
     }

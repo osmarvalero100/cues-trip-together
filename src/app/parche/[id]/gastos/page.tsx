@@ -9,14 +9,15 @@ import { SettleDebtButton } from "@/components/gastos/SettleDebtButton"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
-export default async function GastosPage({ params }: { params: { id: string } }) {
+export default async function GastosPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const cookieStore = await cookies()
   const currentUserId = cookieStore.get('trip_user_id')?.value
 
   if (!currentUserId) return null
 
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       participants: true,
       expenses: {
@@ -45,13 +46,13 @@ export default async function GastosPage({ params }: { params: { id: string } })
 
   let totalGastado = 0
 
-  event.expenses.forEach(exp => {
+  event.expenses.forEach((exp: any) => {
     totalGastado += exp.amount
     
     // El que pagó suma a su favor todo lo que no era su parte (si no se ha saldado)
     // Para hacer la minimización correctamente sobre deudas pendientes, 
     // sumamos los splits NO saldados.
-    exp.splits.forEach(split => {
+    exp.splits.forEach((split: any) => {
       if (!split.isSettled && split.userId !== exp.payerId) {
         if (balances[split.userId]) balances[split.userId].net -= split.amountOwed
         if (balances[exp.payerId]) balances[exp.payerId].net += split.amountOwed
@@ -237,7 +238,7 @@ export default async function GastosPage({ params }: { params: { id: string } })
                 Aún no han registrado ningún gasto.
               </div>
             ) : (
-              event.expenses.map(exp => (
+              event.expenses.map((exp: any) => (
                 <Card key={exp.id} className="shadow-sm">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex justify-between items-start">
@@ -250,7 +251,7 @@ export default async function GastosPage({ params }: { params: { id: string } })
                           <p className="text-sm text-slate-500">Pagado por <span className="font-medium text-slate-800">{exp.payer.nickname}</span> el {format(new Date(exp.createdAt), "d MMM", { locale: es })}</p>
                           
                           <div className="mt-3 flex gap-2 flex-wrap">
-                            {exp.splits.map(s => (
+                            {exp.splits.map((s: any) => (
                               <Badge key={s.id} variant={s.isSettled ? "secondary" : "outline"} className={s.isSettled ? "bg-slate-100 text-slate-500" : "border-amber-200 bg-amber-50 text-amber-700"}>
                                 {s.user.nickname}: ${s.amountOwed.toLocaleString('es-CO')}
                               </Badge>

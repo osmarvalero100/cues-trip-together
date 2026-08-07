@@ -3,9 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Users, AlertCircle, Sparkles } from "lucide-react"
 
-export default async function ParcheResumenPage({ params }: { params: { id: string } }) {
+export default async function ParcheResumenPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       creator: true
     }

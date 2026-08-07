@@ -19,6 +19,7 @@ export function NewChecklistItemDialog({ eventId }: { eventId: string }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {/* @ts-expect-error DialogTrigger types missing asChild */}
       <DialogTrigger asChild>
         <Button className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" />

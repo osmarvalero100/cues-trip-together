@@ -6,12 +6,13 @@ import { MapPin, ExternalLink } from "lucide-react"
 import { NewProposalDialog } from "@/components/votaciones/NewProposalDialog"
 import { VoteButton } from "@/components/votaciones/VoteButton"
 
-export default async function VotacionesPage({ params }: { params: { id: string } }) {
+export default async function VotacionesPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const cookieStore = await cookies()
   const userId = cookieStore.get('trip_user_id')?.value
 
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       proposals: {
         include: {
