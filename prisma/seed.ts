@@ -30,6 +30,7 @@ async function main() {
       status: 'VOTING',
       inviteCode: 'PUENTE-2026',
       creatorId: user1.id,
+      participants: { create: { userId: user1.id } }
     }
   })
 
@@ -81,6 +82,7 @@ async function main() {
       creatorId: user4.id,
       location: 'Finca en Anapoima',
       dateStart: nextSunday,
+      participants: { create: { userId: user4.id } }
     }
   })
 
@@ -125,6 +127,7 @@ async function main() {
       dateStart: dec26,
       dateEnd: jan2,
       location: 'San Andrés',
+      participants: { create: { userId: user1.id } }
     }
   })
 

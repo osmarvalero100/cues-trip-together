@@ -14,7 +14,7 @@ model User {
 
   // Relaciones
   createdEvents Event[]  @relation("EventCreator")
-  participatingEvents Event[] @relation("EventParticipants")
+  participatingEvents EventParticipant[]
   votes         Vote[]
   expenses      Expense[] @relation("ExpensePayer")
   splits        ExpenseSplit[]
@@ -41,7 +41,18 @@ model Event {
   itineraryItems  ItineraryItem[]
   expenses        Expense[]
   checklistItems  ChecklistItem[]
-  participants    User[]   @relation("EventParticipants")
+  participants    EventParticipant[]
+}
+
+model EventParticipant {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
 }
 
 model Proposal {

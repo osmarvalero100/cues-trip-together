@@ -24,7 +24,9 @@ export default async function ParcheLayout({
     where: { id: id },
     include: {
       creator: true,
-      participants: true
+      participants: {
+        include: { user: true }
+      }
     }
   })
 
@@ -58,7 +60,7 @@ export default async function ParcheLayout({
             </div>
           </div>
           
-          <EventSettingsDialog event={event} currentUserId={userId} />
+          <EventSettingsDialog event={{...event, participants: event.participants.map(p => p.user)}} currentUserId={userId} />
         </div>
 
         {/* Navigation Tabs */}

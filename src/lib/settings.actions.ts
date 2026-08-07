@@ -83,10 +83,14 @@ export async function removeParticipant(eventId: string, targetUserId: string) {
     data: { assigneeId: null }
   })
 
-  // 4. Desconectar del evento
-  await prisma.event.update({
-    where: { id: eventId },
-    data: { participants: { disconnect: { id: targetUserId } } }
+  // 4. Desconectar del evento eliminando la relación explícita
+  await prisma.eventParticipant.delete({
+    where: {
+      eventId_userId: {
+        eventId: eventId,
+        userId: targetUserId
+      }
+    }
   })
 
   if (currentUserId === targetUserId) {

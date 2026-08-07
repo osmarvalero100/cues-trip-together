@@ -19,7 +19,9 @@ export default async function GastosPage({ params }: { params: Promise<{ id: str
   const event = await prisma.event.findUnique({
     where: { id: id },
     include: {
-      participants: true,
+      participants: {
+        include: { user: true }
+      },
       expenses: {
         include: {
           payer: true,
@@ -38,7 +40,7 @@ export default async function GastosPage({ params }: { params: Promise<{ id: str
   const balances: Record<string, { id: string, name: string, net: number }> = {}
   
   event.participants.forEach(p => {
-    balances[p.id] = { id: p.id, name: p.nickname, net: 0 }
+    balances[p.user.id] = { id: p.user.id, name: p.user.nickname, net: 0 }
   })
 
   // Lista de deudas crudas sin saldar (para ver el detalle)
@@ -99,7 +101,7 @@ export default async function GastosPage({ params }: { params: Promise<{ id: str
   // En Next 14, un form select es mejor, pero ya hicimos un dialog que maneja client state.
   
   // Convert participant format
-  const participantList = event.participants.map(p => ({ id: p.id, nickname: p.nickname }))
+  const participantList = event.participants.map(p => ({ id: p.user.id, nickname: p.user.nickname }))
 
   return (
     <div className="space-y-6">

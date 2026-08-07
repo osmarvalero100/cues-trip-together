@@ -35,7 +35,7 @@ export async function createParche(formData: FormData) {
       creatorId: user.id,
       inviteCode: generateInviteCode(),
       status: type === 'EXPRESS' ? 'CONFIRMED' : 'VOTING',
-      participants: { connect: { id: user.id } }
+      participants: { create: { userId: user.id } }
     }
   })
 
@@ -68,7 +68,7 @@ export async function joinParche(formData: FormData) {
   let user = await prisma.user.findFirst({
     where: {
       nickname: nickname.trim(),
-      participatingEvents: { some: { id: event.id } }
+      participatingEvents: { some: { eventId: event.id } }
     }
   })
 
@@ -76,7 +76,7 @@ export async function joinParche(formData: FormData) {
     user = await prisma.user.create({
       data: { 
         nickname: nickname.trim(),
-        participatingEvents: { connect: { id: event.id } }
+        participatingEvents: { create: { eventId: event.id } }
       }
     })
   }
