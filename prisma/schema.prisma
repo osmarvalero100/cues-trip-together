@@ -14,6 +14,7 @@ model User {
 
   // Relaciones
   createdEvents Event[]  @relation("EventCreator")
+  participatingEvents Event[] @relation("EventParticipants")
   votes         Vote[]
   expenses      Expense[] @relation("ExpensePayer")
   splits        ExpenseSplit[]
@@ -38,6 +39,7 @@ model Event {
   itineraryItems  ItineraryItem[]
   expenses        Expense[]
   checklistItems  ChecklistItem[]
+  participants    User[]   @relation("EventParticipants")
 }
 
 model Proposal {

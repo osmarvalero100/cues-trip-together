@@ -34,7 +34,8 @@ export async function createParche(formData: FormData) {
       type,
       creatorId: user.id,
       inviteCode: generateInviteCode(),
-      status: type === 'EXPRESS' ? 'CONFIRMED' : 'VOTING' 
+      status: type === 'EXPRESS' ? 'CONFIRMED' : 'VOTING',
+      participants: { connect: { id: user.id } }
     }
   })
 
@@ -65,7 +66,10 @@ export async function joinParche(formData: FormData) {
   }
 
   const user = await prisma.user.create({
-    data: { nickname }
+    data: { 
+      nickname,
+      participatingEvents: { connect: { id: event.id } }
+    }
   })
 
   const { cookies } = await import('next/headers')
