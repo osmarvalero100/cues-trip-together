@@ -1,0 +1,5 @@
+DATABASE_HOST: gateway01.us-east-1.prod.aws.tidbcloud.com
+DATABASE_PORT: 4000
+DATABASE_USER: 27rPJ4JNEwW6u1H.root
+DATABASE_PASSWORD: COuLf1bAosuiFT3Z
+DATABASE_NAME: trip-together
