@@ -30,6 +30,8 @@ model Event {
   dateStart   DateTime?
   dateEnd     DateTime?
   location    String?
+  description String?
+  coverUrl    String?
   createdAt   DateTime @default(now())
 
   creatorId   String

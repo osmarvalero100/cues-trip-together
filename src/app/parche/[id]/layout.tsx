@@ -2,7 +2,8 @@ import { prisma } from "@/lib/db"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Map, CalendarDays, Wallet, CheckSquare, Settings, ArrowLeft } from "lucide-react"
+import { Map, CalendarDays, Wallet, CheckSquare, ArrowLeft } from "lucide-react"
+import { EventSettingsDialog } from "@/components/settings/EventSettingsDialog"
 
 export default async function ParcheLayout({
   children,
@@ -22,7 +23,8 @@ export default async function ParcheLayout({
   const event = await prisma.event.findUnique({
     where: { id: id },
     include: {
-      creator: true
+      creator: true,
+      participants: true
     }
   })
 
@@ -56,9 +58,7 @@ export default async function ParcheLayout({
             </div>
           </div>
           
-          <button className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
-            <Settings className="w-4 h-4" />
-          </button>
+          <EventSettingsDialog event={event} />
         </div>
 
         {/* Navigation Tabs */}
