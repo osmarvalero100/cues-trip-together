@@ -65,12 +65,21 @@ export async function joinParche(formData: FormData) {
     throw new Error('Parche no encontrado con ese código')
   }
 
-  const user = await prisma.user.create({
-    data: { 
-      nickname,
-      participatingEvents: { connect: { id: event.id } }
+  let user = await prisma.user.findFirst({
+    where: {
+      nickname: nickname.trim(),
+      participatingEvents: { some: { id: event.id } }
     }
   })
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: { 
+        nickname: nickname.trim(),
+        participatingEvents: { connect: { id: event.id } }
+      }
+    })
+  }
 
   const { cookies } = await import('next/headers')
   const cookieStore = await cookies()
