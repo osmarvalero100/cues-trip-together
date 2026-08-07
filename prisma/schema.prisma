@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  nickname  String
+  createdAt DateTime @default(now())
+
+  // Relaciones
+  createdEvents Event[]  @relation("EventCreator")
+  votes         Vote[]
+  expenses      Expense[] @relation("ExpensePayer")
+  splits        ExpenseSplit[]
+  checklistItems ChecklistItem[] @relation("ChecklistAssignee")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   // "EXPRESS" | "MULTINIGHT"
+  status      String   @default("VOTING") // "VOTING" | "CONFIRMED" | "ARCHIVED"
+  inviteCode  String   @unique
+  dateStart   DateTime?
+  dateEnd     DateTime?
+  location    String?
+  createdAt   DateTime @default(now())
+
+  creatorId   String
+  creator     User     @relation("EventCreator", fields: [creatorId], references: [id])
+
+  proposals       Proposal[]
+  itineraryItems  ItineraryItem[]
+  expenses        Expense[]
+  checklistItems  ChecklistItem[]
+}
+
+model Proposal {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  imageUrl    String?
+  linkUrl     String?
+  createdAt   DateTime @default(now())
+
+  votes       Vote[]
+}
+
+model Vote {
+  id         String   @id @default(cuid())
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([proposalId, userId])
+}
+
+model ItineraryItem {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title       String
+  timeStart   DateTime
+  description String?
+  costEst     Float?
+  createdAt   DateTime @default(now())
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  payerId     String
+  payer       User     @relation("ExpensePayer", fields: [payerId], references: [id])
+  title       String
+  amount      Float
+  category    String?  // "FOOD" | "TRANSPORT" | "LODGING" | "OTHER"
+  createdAt   DateTime @default(now())
+
+  splits      ExpenseSplit[]
+}
+
+model ExpenseSplit {
+  id          String   @id @default(cuid())
+  expenseId   String
+  expense     Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amountOwed  Float
+  isSettled   Boolean  @default(false)
+}
+
+model ChecklistItem {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title       String
+  category    String?  // "FOOD" | "DRINKS" | "UTENSILS" | "GAMES"
+  isCompleted Boolean  @default(false)
+  assigneeId  String?
+  assignee    User?    @relation("ChecklistAssignee", fields: [assigneeId], references: [id])
+}
