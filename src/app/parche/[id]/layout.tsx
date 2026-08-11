@@ -67,14 +67,14 @@ export default async function ParcheLayout({
         <div className="container mx-auto px-4">
           <nav className="flex overflow-x-auto hide-scrollbar gap-1 py-2">
             {navItems.filter(item => !item.hide).map(item => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors focus:bg-indigo-50 focus:text-indigo-700"
               >
                 <item.icon className="w-4 h-4" />
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

@@ -126,6 +126,7 @@
   }
   html {
     @apply font-sans;
+    font-size: 18px;
   }
   button, [type='button'], [type='submit'], [type='reset'] {
     cursor: pointer;

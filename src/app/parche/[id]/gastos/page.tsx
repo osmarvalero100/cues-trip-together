@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Receipt, Wallet, Banknote, ArrowRight } from "lucide-react"
 import { NewExpenseDialog } from "@/components/gastos/NewExpenseDialog"
 import { SettleDebtButton } from "@/components/gastos/SettleDebtButton"
+import { ExpenseActions } from "@/components/gastos/ExpenseActions"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -264,6 +265,21 @@ export default async function GastosPage({ params }: { params: Promise<{ id: str
                       <div className="text-xl font-black">
                         ${exp.amount.toLocaleString('es-CO')}
                       </div>
+                    </div>
+                    <div className="mt-3 flex justify-end">
+                      <ExpenseActions
+                        expense={{
+                          id: exp.id,
+                          title: exp.title,
+                          amount: exp.amount,
+                          category: exp.category,
+                          payerId: exp.payerId,
+                          splits: exp.splits.map((s: any) => ({ id: s.id, userId: s.userId, isSettled: s.isSettled }))
+                        }}
+                        eventId={event.id}
+                        currentUserId={currentUserId}
+                        participants={participantList}
+                      />
                     </div>
                   </CardContent>
                 </Card>

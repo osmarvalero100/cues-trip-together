@@ -59,3 +59,52 @@ export async function settleDebt(splitId: string, eventId: string) {
   
   revalidatePath(`/parche/${eventId}/gastos`)
 }
+
+export async function updateExpense(formData: FormData) {
+  const expenseId = formData.get('expenseId') as string
+  const eventId = formData.get('eventId') as string
+  const payerId = formData.get('payerId') as string
+  const title = formData.get('title') as string
+  const amountStr = formData.get('amount') as string
+  const category = formData.get('category') as string
+  const splitWithIds = formData.getAll('splitWith') as string[]
+
+  if (!expenseId || !eventId || !title || !amountStr || splitWithIds.length === 0) {
+    throw new Error('Faltan campos obligatorios o no se seleccionaron participantes')
+  }
+
+  const amount = parseFloat(amountStr)
+  if (isNaN(amount) || amount <= 0) {
+    throw new Error('Monto inválido')
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.expense.update({
+      where: { id: expenseId },
+      data: { title, amount, category: category || null }
+    })
+
+    // Recalcular los splits repartiendo equitativamente
+    await tx.expenseSplit.deleteMany({ where: { expenseId } })
+
+    const splitAmount = amount / splitWithIds.length
+    await tx.expenseSplit.createMany({
+      data: splitWithIds.map(userId => ({
+        expenseId,
+        userId,
+        amountOwed: splitAmount,
+        isSettled: userId === payerId
+      }))
+    })
+  })
+
+  revalidatePath(`/parche/${eventId}/gastos`)
+}
+
+export async function deleteExpense(expenseId: string, eventId: string) {
+  await prisma.expense.delete({
+    where: { id: expenseId }
+  })
+
+  revalidatePath(`/parche/${eventId}/gastos`)
+}

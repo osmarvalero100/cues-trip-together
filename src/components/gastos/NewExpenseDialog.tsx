@@ -34,6 +34,9 @@ export function NewExpenseDialog({ eventId, participants, currentUserId }: { eve
     setSelectedIds(next)
   }
 
+  const selectAll = () => setSelectedIds(new Set(participants.map(p => p.id)))
+  const deselectAll = () => setSelectedIds(new Set())
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto" />}>
@@ -68,14 +71,21 @@ export function NewExpenseDialog({ eventId, participants, currentUserId }: { eve
             </select>
           </div>
 
-          <div className="space-y-3 pt-2 border-t">
-            <Label className="flex items-center gap-2">
-              <Users className="w-4 h-4" /> 
-              ¿Entre quiénes se divide?
-            </Label>
+            <div className="space-y-3 pt-2 border-t">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2">
+                  <Users className="w-4 h-4" /> 
+                  ¿Entre quiénes se divide?
+                </Label>
+                <div className="flex gap-2">
+                  <button type="button" onClick={selectAll} className="text-xs font-medium text-indigo-600 hover:underline">Todos</button>
+                  <span className="text-xs text-slate-300">|</span>
+                  <button type="button" onClick={deselectAll} className="text-xs font-medium text-indigo-600 hover:underline">Ninguno</button>
+                </div>
+              </div>
             <div className="space-y-2 max-h-40 overflow-y-auto bg-slate-50 p-2 rounded-lg">
               {participants.map(p => (
-                <Label key={p.id} className="flex items-center gap-3 p-2 hover:bg-white rounded cursor-pointer border border-transparent hover:border-slate-200 transition-colors">
+                <Label key={p.id} onClick={() => toggleParticipant(p.id)} className="flex items-center gap-3 p-2 hover:bg-white rounded cursor-pointer border border-transparent hover:border-slate-200 transition-colors">
                   <div className={`w-5 h-5 rounded flex items-center justify-center shrink-0 border ${selectedIds.has(p.id) ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>
                     {selectedIds.has(p.id) && <CheckSquare className="w-3.5 h-3.5" />}
                   </div>

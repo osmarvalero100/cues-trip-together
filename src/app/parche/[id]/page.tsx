@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Users, AlertCircle, Sparkles } from "lucide-react"
+import { CopyInviteCode } from "@/components/invite/CopyInviteCode"
 
 export default async function ParcheResumenPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -53,9 +54,7 @@ export default async function ParcheResumenPage({ params }: { params: Promise<{ 
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black tracking-widest bg-black/10 rounded-lg p-2 inline-block">
-              {event.inviteCode}
-            </div>
+            <CopyInviteCode inviteCode={event.inviteCode} />
             <p className="text-xs text-indigo-100 mt-2">
               Comparte este código por WhatsApp
             </p>
