@@ -28,12 +28,12 @@ export default function Home() {
           <Card className="shadow-xl border-0 overflow-hidden sm:rounded-2xl bg-white/80 backdrop-blur-sm">
             <Tabs defaultValue="crear" className="w-full">
               <div className="px-6 pt-6 pb-2">
-                <TabsList className="grid w-full grid-cols-2 h-14 bg-slate-100/50 p-1 rounded-xl">
-                  <TabsTrigger value="crear" className="rounded-lg text-base font-semibold data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-indigo-600">
-                    Armar el Parche
+                <TabsList className="grid w-full grid-cols-2 bg-slate-100/50 p-1 rounded-xl relative z-10">
+                  <TabsTrigger value="crear" className="rounded-lg text-sm sm:text-base whitespace-normal py-3 font-semibold data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-indigo-600 leading-tight select-none">
+                    <span className="pointer-events-none">Armar el Parche</span>
                   </TabsTrigger>
-                  <TabsTrigger value="unirse" className="rounded-lg text-base font-semibold data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-indigo-600">
-                    Unirse al Parche
+                  <TabsTrigger value="unirse" className="rounded-lg text-sm sm:text-base whitespace-normal py-3 font-semibold data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-indigo-600 leading-tight select-none">
+                    <span className="pointer-events-none">Unirse al Parche</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
