@@ -3,7 +3,7 @@
 import { useTransition } from 'react'
 import { Button } from "@/components/ui/button"
 import { settleDebt } from "@/lib/gastos.actions"
-import { CheckCircle } from "lucide-react"
+import { CheckCircle, Loader2 } from "lucide-react"
 
 export function SettleDebtButton({ splitId, eventId }: { splitId: string, eventId: string }) {
   const [isPending, startTransition] = useTransition()
@@ -20,7 +20,7 @@ export function SettleDebtButton({ splitId, eventId }: { splitId: string, eventI
         })
       }}
     >
-      <CheckCircle className="w-3 h-3 mr-1" />
+      {isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <CheckCircle className="w-3 h-3 mr-1" />}
       Marcar pagado
     </Button>
   )

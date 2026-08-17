@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import { Check, Hand, Trash2 } from "lucide-react"
+import { Check, Hand, Trash2, Loader2 } from "lucide-react"
 import { toggleChecklistItem, assignChecklistItem, deleteChecklistItem } from "@/lib/checklist.actions"
 import { Button } from "@/components/ui/button"
 
@@ -30,7 +30,7 @@ export function ChecklistItemRow({
           }}
           className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${item.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 text-transparent hover:border-indigo-400'}`}
         >
-          <Check className="w-4 h-4" />
+          {isPending ? <Loader2 className={`w-4 h-4 animate-spin ${item.isCompleted ? 'text-white' : 'text-slate-400'}`} /> : <Check className="w-4 h-4" />}
         </button>
         <div>
           <p className={`font-semibold ${item.isCompleted ? 'line-through text-slate-500' : 'text-slate-800'}`}>
@@ -61,7 +61,7 @@ export function ChecklistItemRow({
               })
             }}
           >
-            Yo lo llevo
+            {isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null} Yo lo llevo
           </Button>
         )}
         
@@ -76,7 +76,7 @@ export function ChecklistItemRow({
             })
           }}
         >
-          <Trash2 className="w-4 h-4" />
+          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
         </Button>
       </div>
     </div>

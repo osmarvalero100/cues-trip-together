@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -54,9 +55,9 @@ export function NewActivityDialog({ eventId, defaultDate }: { eventId: string, d
             <Input id="costEst" name="costEst" type="number" min="0" step="1000" placeholder="15000" />
           </div>
 
-          <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">
+          <SubmitButton loadingText="Guardando..." className="w-full bg-indigo-600 hover:bg-indigo-700">
             Guardar Actividad
-          </Button>
+          </SubmitButton>
         </form>
       </DialogContent>
     </Dialog>

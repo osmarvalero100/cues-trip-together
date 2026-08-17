@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -47,9 +48,9 @@ export function NewChecklistItemDialog({ eventId }: { eventId: string }) {
             </select>
           </div>
 
-          <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">
+          <SubmitButton loadingText="Agregando..." className="w-full bg-indigo-600 hover:bg-indigo-700">
             Agregar a la lista
-          </Button>
+          </SubmitButton>
         </form>
       </DialogContent>
     </Dialog>

@@ -2,12 +2,13 @@
 
 import { useState, useTransition } from 'react'
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Settings, Users, AlertTriangle, Image as ImageIcon, LogOut, UserMinus } from "lucide-react"
+import { Settings, Users, AlertTriangle, Image as ImageIcon, LogOut, UserMinus, Loader2 } from "lucide-react"
 import { updateEventSettings, closeVoting, deleteEvent, removeParticipant } from "@/lib/settings.actions"
 
 type Participant = { id: string, nickname: string, createdAt: Date }
@@ -105,9 +106,9 @@ export function EventSettingsDialog({ event, currentUserId }: { event: EventData
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">
+              <SubmitButton loadingText="Guardando..." className="w-full bg-indigo-600 hover:bg-indigo-700">
                 Guardar Cambios
-              </Button>
+              </SubmitButton>
             </form>
           </TabsContent>
 
@@ -149,7 +150,7 @@ export function EventSettingsDialog({ event, currentUserId }: { event: EventData
                           disabled={isPending}
                           title="Eliminar participante"
                         >
-                          <UserMinus className="w-4 h-4" />
+                          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserMinus className="w-4 h-4" />}
                         </Button>
                       )}
                       
@@ -167,7 +168,7 @@ export function EventSettingsDialog({ event, currentUserId }: { event: EventData
                           }}
                           disabled={isPending}
                         >
-                          <LogOut className="w-4 h-4 mr-2" />
+                          {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <LogOut className="w-4 h-4 mr-2" />}
                           Salir
                         </Button>
                       )}
@@ -196,7 +197,7 @@ export function EventSettingsDialog({ event, currentUserId }: { event: EventData
                     })
                   }}
                 >
-                  Confirmar Destino
+                  {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin inline" /> : null} Confirmar Destino
                 </Button>
               </div>
             )}
@@ -220,7 +221,7 @@ export function EventSettingsDialog({ event, currentUserId }: { event: EventData
                   }
                 }}
               >
-                Eliminar Parche
+                {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin inline" /> : null} Eliminar Parche
               </Button>
             </div>
           </TabsContent>

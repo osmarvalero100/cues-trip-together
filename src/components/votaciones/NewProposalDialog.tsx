@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -43,7 +44,7 @@ export function NewProposalDialog({ eventId }: { eventId: string }) {
             <Label htmlFor="linkUrl">Enlace (Airbnb, Maps, etc.) - Opcional</Label>
             <Input id="linkUrl" name="linkUrl" type="url" placeholder="https://..." />
           </div>
-          <Button type="submit" className="w-full">Agregar Propuesta</Button>
+          <SubmitButton loadingText="Agregando..." className="w-full">Agregar Propuesta</SubmitButton>
         </form>
       </DialogContent>
     </Dialog>

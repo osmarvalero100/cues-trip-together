@@ -3,7 +3,7 @@
 import { useTransition } from 'react'
 import { Button } from "@/components/ui/button"
 import { voteProposal } from "@/lib/votaciones.actions"
-import { ThumbsUp } from "lucide-react"
+import { ThumbsUp, Loader2 } from "lucide-react"
 
 export function VoteButton({ 
   eventId, 
@@ -29,7 +29,7 @@ export function VoteButton({
         })
       }}
     >
-      <ThumbsUp className="w-4 h-4 mr-2" />
+      {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ThumbsUp className="w-4 h-4 mr-2" />}
       {hasVoted ? 'Tu Voto' : 'Votar'} ({voteCount})
     </Button>
   )

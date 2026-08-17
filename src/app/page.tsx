@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -79,9 +80,9 @@ export default function Home() {
                       <Input id="nickname" name="nickname" placeholder="Tu apodo en el grupo" required className="h-12 bg-slate-50" />
                     </div>
 
-                    <Button type="submit" className="w-full h-12 text-base font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md">
+                    <SubmitButton loadingText="Creando..." className="w-full h-12 text-base font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md">
                       Crear Parche <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    </SubmitButton>
                   </form>
                 </CardContent>
               </TabsContent>
@@ -105,9 +106,9 @@ export default function Home() {
                       <Input id="join-nickname" name="nickname" placeholder="Tu apodo" required className="h-12 bg-slate-50" />
                     </div>
 
-                    <Button type="submit" className="w-full h-12 text-base font-semibold bg-slate-900 hover:bg-slate-800 shadow-md">
+                    <SubmitButton loadingText="Entrando..." className="w-full h-12 text-base font-semibold bg-slate-900 hover:bg-slate-800 shadow-md">
                       Entrar al Parche <Users className="w-4 h-4 ml-2" />
-                    </Button>
+                    </SubmitButton>
                   </form>
                 </CardContent>
               </TabsContent>
