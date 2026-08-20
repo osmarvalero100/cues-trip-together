@@ -23,7 +23,7 @@ export async function Header() {
                 Mis Parches
               </Link>
               <form action={logoutUser}>
-                <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
+                <Button type="submit" variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
                   Salir
                 </Button>
               </form>
